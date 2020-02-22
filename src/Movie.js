@@ -1,36 +1,30 @@
 import React, { useState } from 'react';
 import { Col, Row, Card, CardBody, CardTitle, CardText } from 'reactstrap';
-import { Redirect } from 'react-router-dom';
-
 
 const Movie = (props) => {
 
-    const [redirect, setRedirect] = useState(false);
+    const [choice, setChoice] = useState("");
 
-    const check = () => setRedirect(!redirect);
+    const handleChoiceChanges = (e) => {
+        setChoice(e.target.value)
+    }
 
-    const renderRedirect = () => {
-        if (redirect) {
-            return <Redirect to="/MovieDetail.js" />
-        }
+    const reset = () => setChoice("");
+
+    const chooseMovieFunction = (e) => {
+        e.preventDefault();
+        props.choose(choice);
+        reset();
     }
 
     return (
-        <Row>
             <Col sm="4">
                 <Card
-                    // value={props.movies.Title}
-                    onChange={check}
+                    value={props.movie.imdbID}
+                    onChange={handleChoiceChanges}
                 >
                     <img
-                        onClick={renderRedirect}
-                        // {loading && !errorMessage ? (
-                        //     <span>loading... </span>
-                        // ) : errorMessage ? (
-                        //     <div className="errorMessage">{errorMessage}</div>
-                        // ) : (
-                        //             <MovieDetail key={`${movie.Title}`} details={details} select={select}/>
-                        //         )}
+                        onClick={chooseMovieFunction}
                         width="75%"
                         src={props.movie.Poster}
                         alt={props.movie.Title} ></img>
@@ -42,7 +36,6 @@ const Movie = (props) => {
                     </CardBody>
                 </Card>
             </Col>
-        </Row>
     )
 }
 

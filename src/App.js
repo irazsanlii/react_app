@@ -29,12 +29,24 @@ const reducer = (state, action) => {
         loading: true,
         errorMessage: null
       };
+    // case "detailRequest":
+    //   return {
+    //     ...state,
+    //     loading: true,
+    //     errorMessage: null
+    //   };
     case "movieLoaded":
       return {
         ...state,
         loading: false,
         movies: action.payload
       };
+    // case "detailLoaded":
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     movies: action.payload
+    //   };
     case "failure":
       return {
         ...state,
@@ -89,27 +101,39 @@ const App = () => {
       });
   };
 
-  // const select = selected => {
-  //   dispatch({
-  //     type: "detailRequest"
-  //   });
+  const choose = choice => {
 
-  //   fetch(`https://www.omdbapi.com/?t=${selected}&apikey=cc4daf76`)
-  //     .then(response => response.json())
-  //     .then(jsonResponse => {
-  //       if (jsonResponse.Response === "True") {
-  //         dispatch({
-  //           type: "detailLoaded",
-  //           payload: jsonResponse.MovieDetail
-  //         });
-  //       } else {
-  //         dispatch({
-  //           type: "failure",
-  //           error: jsonResponse.Error
-  //         });
-  //       }
-  //     });
-  // };
+    //   dispatch({
+    //     type: "movieRequest"
+    //   });
+
+    //   fetch(`https://www.omdbapi.com/?s=${item}&apikey=cc4daf76`)
+    //     .then(response => response.json())
+    //     .then(jsonResponse => {
+    //       if (jsonResponse.Response === "True") {
+    //         dispatch({
+    //           type: "movieLoaded",
+    //           payload: jsonResponse.Search
+    //         });
+    //       } else {
+    //         dispatch({
+    //           type: "failure",
+    //           error: jsonResponse.Error
+    //         });
+    //       }
+    //     });
+    // };
+
+    // return (
+    //   loading && !errorMessage ? (
+    //     <span>loading... </span>
+    //   ) : errorMessage ? (
+    //     <div className="errorMessage">{errorMessage}</div>
+    //   ) : (
+    //         <MovieDetail choice={choice}/>
+    //       )
+    // )
+  }
 
   const { movies, errorMessage, loading } = state;
 
@@ -150,7 +174,7 @@ const App = () => {
                   ) : (
                         movies.map((movie, index) => (
                           <Movie {...props} key={`${index}-${movie.Title}`} movie={movie}
-                          //  select={select} 
+                            choose={choose}
                           />
                         )))
                 )}
@@ -158,17 +182,18 @@ const App = () => {
               <Route
                 exact path="/details"
                 render={props => (
-                  <MovieDetail
-                    {...props}
-                  />
+                  loading && !errorMessage ? (
+                    <span>loading... </span>
+                  ) : errorMessage ? (
+                    <div className="errorMessage">{errorMessage}</div>
+                  ) : (
+                        <MovieDetail {...props} />
+                      )
                 )}
               />
+              )}
+            />
             </Switch>
-
-
-
-
-
           </Container>
         </div>
       </div>
