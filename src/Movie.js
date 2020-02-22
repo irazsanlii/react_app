@@ -18,14 +18,14 @@ const Movie = (props) => {
     }
 
     return (
-            <Col sm="4">
+            <Col sm="4" style={{'display':'inline-block'}}>
                 <Card
                     value={props.movie.imdbID}
                     onChange={handleChoiceChanges}
                 >
                     <img
                         onClick={chooseMovieFunction}
-                        width="75%"
+                        width="100%"
                         src={props.movie.Poster}
                         alt={props.movie.Title} ></img>
                     <CardBody className="text-center">
