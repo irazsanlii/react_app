@@ -89,18 +89,17 @@ const App = () => {
       });
   };
 
-  const [getMovie, setMovie] = useState();
+  // const [getMovie, setMovie] = useState();
 
   const getDetail = (choice) => {
-
-
-
     fetch(`https://www.omdbapi.com/?i=${choice}&apikey=cc4daf76`)
       .then(response => response.json())
-      .then(jsonResponse => setMovie(jsonResponse))
-        console.log(getMovie)
       
-      
+      .then(jsonResponse => {
+        // setMovie(jsonResponse)
+        // console.log(getMovie)
+        console.log(jsonResponse)
+      })
   }
 
   const { movies, errorMessage, loading } = state;
@@ -156,7 +155,7 @@ const App = () => {
                     ) : errorMessage ? (
                       <div className="errorMessage">{errorMessage}</div>
                     ) : (
-                          <MovieDetail {...props} getMovie={getMovie} />
+                          <MovieDetail {...props}  />
                         )
                   )}
                 />
