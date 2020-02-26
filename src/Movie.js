@@ -1,41 +1,43 @@
-import React, { useState } from 'react';
-import { Col, Row, Card, CardBody, CardTitle, CardText } from 'reactstrap';
-
+import React
+, { useState }
+    from 'react';
+import { Col, Card, CardBody, CardTitle, CardText } from 'reactstrap';
 const Movie = (props) => {
 
-    const [choice, setChoice] = useState("");
+    const [choice, setChoice] = useState(props.movie.imdbID);
 
-    const handleChoiceChanges = (e) => {
-        setChoice(e.target.value)
+    const handleChanges = (e) => {
+        setChoice(e.target.value);
     }
 
-    const reset = () => setChoice("");
+    //   const reset = () => setChoice("");
 
-    const chooseMovieFunction = (e) => {
+    const handleClick = (e) => {
         e.preventDefault();
-        props.choose(choice);
-        reset();
+        console.log(choice);
+        props.getDetail(choice);
+        //      reset();
     }
 
     return (
-            <Col sm="4" style={{'display':'inline-block'}}>
-                <Card
-                    value={props.movie.imdbID}
-                    onChange={handleChoiceChanges}
-                >
-                    <img
-                        onClick={chooseMovieFunction}
-                        width="100%"
-                        src={props.movie.Poster}
-                        alt={props.movie.Title} ></img>
-                    <CardBody className="text-center">
-                        <CardTitle className="font-weight-bold mb-4">{props.movie.Title}</CardTitle>
-                        <hr />
-                        <p className="dark-grey-text mt-4"></p>
-                        <CardText >{props.movie.Year}</CardText>
-                    </CardBody>
-                </Card>
-            </Col>
+        <Col sm="4" style={{ 'display': 'inline-block' }}>
+            <Card
+                // value={choice}
+                onChange={handleChanges}
+            >
+                <img
+                    onClick={handleClick}
+                    width="100%"
+                    src={props.movie.Poster}
+                    alt={props.movie.Title} ></img>
+                <CardBody className="text-center">
+                    <CardTitle className="font-weight-bold mb-4">{props.movie.Title}</CardTitle>
+                    <hr />
+                    <p className="dark-grey-text mt-4"></p>
+                    <CardText >{props.movie.Year}</CardText>
+                </CardBody>
+            </Card>
+        </Col>
     )
 }
 

@@ -1,6 +1,7 @@
 import Movie from "./Movie";
 import MovieDetail from "./MovieDetail";
 import Search from "./Search";
+//import Pagination from "./Pagination"
 import React, { useReducer, useEffect, useState } from "react";
 import {
   Container,
@@ -10,10 +11,9 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  Form,
+  Form
 } from "reactstrap";
-import { Route, Switch } from "react-router-dom";
-
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const initialState = {
   loading: true,
@@ -29,24 +29,12 @@ const reducer = (state, action) => {
         loading: true,
         errorMessage: null
       };
-    // case "detailRequest":
-    //   return {
-    //     ...state,
-    //     loading: true,
-    //     errorMessage: null
-    //   };
     case "movieLoaded":
       return {
         ...state,
         loading: false,
         movies: action.payload
       };
-    // case "detailLoaded":
-    //   return {
-    //     ...state,
-    //     loading: false,
-    //     movies: action.payload
-    //   };
     case "failure":
       return {
         ...state,
@@ -68,18 +56,18 @@ const App = () => {
 
   useEffect(() => { // COMPONENT DID MOUNT
 
-    fetch("http://omdbapi.com/?apikey=cc4daf76&s=sun")
+    fetch("http://omdbapi.com/?apikey=cc4daf76&s=sun") // GET DATA
       .then(response => response.json())
       .then(jsonResponse => {
 
-        dispatch({
+        dispatch({ // SEND
           type: "movieLoaded",
           payload: jsonResponse.Search
         });
       });
   }, []);
 
-  const search = item => {
+  const search = (item) => {
     dispatch({
       type: "movieRequest"
     });
@@ -101,38 +89,18 @@ const App = () => {
       });
   };
 
-  const choose = choice => {
+  const [getMovie, setMovie] = useState();
 
-    //   dispatch({
-    //     type: "movieRequest"
-    //   });
+  const getDetail = (choice) => {
 
-    //   fetch(`https://www.omdbapi.com/?s=${item}&apikey=cc4daf76`)
-    //     .then(response => response.json())
-    //     .then(jsonResponse => {
-    //       if (jsonResponse.Response === "True") {
-    //         dispatch({
-    //           type: "movieLoaded",
-    //           payload: jsonResponse.Search
-    //         });
-    //       } else {
-    //         dispatch({
-    //           type: "failure",
-    //           error: jsonResponse.Error
-    //         });
-    //       }
-    //     });
-    // };
 
-    // return (
-    //   loading && !errorMessage ? (
-    //     <span>loading... </span>
-    //   ) : errorMessage ? (
-    //     <div className="errorMessage">{errorMessage}</div>
-    //   ) : (
-    //         <MovieDetail choice={choice}/>
-    //       )
-    // )
+
+    fetch(`https://www.omdbapi.com/?i=${choice}&apikey=cc4daf76`)
+      .then(response => response.json())
+      .then(jsonResponse => setMovie(jsonResponse))
+        console.log(getMovie)
+      
+      
   }
 
   const { movies, errorMessage, loading } = state;
@@ -163,37 +131,40 @@ const App = () => {
         </div>
         <div style={{ paddingTop: 50 }} >
           <Container >
-            <Switch>
-              <Route
-                exact path="/"
-                render={props => (
-                  loading && !errorMessage ? (
-                    <span>loading... </span>
-                  ) : errorMessage ? (
-                    <div className="errorMessage">{errorMessage}</div>
-                  ) : (
-                        movies.map((movie, index) => (
-                          <Movie {...props} key={`${index}-${movie.Title}`} movie={movie}
-                            choose={choose}
-                          />
-                        )))
+            <Router>
+              <Switch>
+                <Route
+                  exact path="/"
+                  render={props => (
+                    loading && !errorMessage ? (
+                      <span>loading... </span>
+                    ) : errorMessage ? (
+                      <div className="errorMessage">{errorMessage}</div>
+                    ) : (
+                          movies.map((movie, index) => (
+                            <Movie {...props} key={`${index}-${movie.Title}`} getDetail={getDetail} movie={movie}
+                            />
+                          ))
+                        )
+                  )}
+                />
+                <Route
+                  path="/details"
+                  render={props => (
+                    loading && !errorMessage ? (
+                      <span>loading... </span>
+                    ) : errorMessage ? (
+                      <div className="errorMessage">{errorMessage}</div>
+                    ) : (
+                          <MovieDetail {...props} getMovie={getMovie} />
+                        )
+                  )}
+                />
                 )}
               />
-              <Route
-                exact path="/details"
-                render={props => (
-                  loading && !errorMessage ? (
-                    <span>loading... </span>
-                  ) : errorMessage ? (
-                    <div className="errorMessage">{errorMessage}</div>
-                  ) : (
-                        <MovieDetail {...props} />
-                      )
-                )}
-              />
-              )}
-            />
             </Switch>
+            </Router>
+
           </Container>
         </div>
       </div>

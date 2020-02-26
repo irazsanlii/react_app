@@ -1,73 +1,74 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Container, Col, Media, Table } from 'reactstrap';
 
-const MovieDetail = ({ details }) => {
 
-    return (
-        <div>
 
-            <Container>
-                <Col>
-                    <Media object data-src={details.Poster} alt="Card image cap" />
-                </Col>
-                <Col>
-                    <Table>
-                        <tbody>
-                            <tr key={details.Title}>
-                                <td>Title</td>
-                                <td>{details.Title}</td>
-                            </tr>
-                            <tr key={details.Year}>
-                                <td>Year</td>
-                                <td>{details.Year}</td>
-                            </tr>
-                            <tr key={details.Released}>
-                                <td>Released</td>
-                                <td>{details.Released}</td>
-                            </tr>
-                            <tr key={details.Runtime}>
-                                <td>Runtime</td>
-                                <td>{details.Runtime}</td>
-                            </tr>
-                            <tr key={details.Genre}>
-                                <td>Genre</td>
-                                <td>{details.Genre}</td>
-                            </tr>
-                            <tr key={details.Director}>
-                                <td>Director</td>
-                                <td>{details.Director}</td>
-                            </tr>
-                            <tr key={details.Writer}>
-                                <td>Writer</td>
-                                <td>{details.Writer}</td>
-                            </tr>
-                            <tr key={details.Actors}>
-                                <td>Actors</td>
-                                <td>{details.Actors}</td>
-                            </tr>
-                            <tr key={details.Plot}>
-                                <td>Plot</td>
-                                <td>{details.Plot}</td>
-                            </tr>
-                            <tr key={details.Language}>
-                                <td>Language</td>
-                                <td>{details.Language}</td>
-                            </tr>
-                            <tr key={details.Country}>
-                                <td>Country</td>
-                                <td>{details.Country}</td>
-                            </tr>
-                            <tr key={details.Awards}>
-                                <td>Awards</td>
-                                <td>{details.Awards}</td>
-                            </tr>
-                        </tbody>
-                    </Table>
-                </Col>
-            </Container>
-            )}
+class MovieDetail extends Component {
+    render() {
+        return (
+            <div>
+                <Container>
+                    <Col>
+                        <Media object data-src={this.props.getMovie.Poster} alt="Card image cap" />
+                    </Col>
+                    <Col>
+                        <Table>
+                            <tbody>
+                                <tr key={this.props.getMovie.Title}>
+                                    <td>Title</td>
+                                    <td>{this.props.getMovie.Title}</td>
+                                </tr>
+                                <tr key={this.props.getMovie.Year}>
+                                    <td>Year</td>
+                                    <td>{this.props.getMovie.Year}</td>
+                                </tr>
+                                <tr key={this.props.getMovie.Released}>
+                                    <td>Released</td>
+                                    <td>{this.props.getMovie.Released}</td>
+                                </tr>
+                                <tr key={this.props.getMovie.Runtime}>
+                                    <td>Runtime</td>
+                                    <td>{this.props.getMovie.Runtime}</td>
+                                </tr>
+                                <tr key={this.props.getMovie.Genre}>
+                                    <td>Genre</td>
+                                    <td>{this.props.getMovie.Genre}</td>
+                                </tr>
+                                <tr key={this.props.getMovie.Director}>
+                                    <td>Director</td>
+                                    <td>{this.props.getMovie.Director}</td>
+                                </tr>
+                                <tr key={this.props.getMovie.Writer}>
+                                    <td>Writer</td>
+                                    <td>{this.props.getMovie.Writer}</td>
+                                </tr>
+                                <tr key={this.props.getMovie.Actors}>
+                                    <td>Actors</td>
+                                    <td>{this.props.getMovie.Actors}</td>
+                                </tr>
+                                <tr key={this.props.getMovie.Plot}>
+                                    <td>Plot</td>
+                                    <td>{this.props.getMovie.Plot}</td>
+                                </tr>
+                                <tr key={this.props.getMovie.Language}>
+                                    <td>Language</td>
+                                    <td>{this.props.getMovie.Language}</td>
+                                </tr>
+                                <tr key={this.props.getMovie.Country}>
+                                    <td>Country</td>
+                                    <td>{this.props.getMovie.Country}</td>
+                                </tr>
+                                <tr key={this.props.getMovie.Awards}>
+                                    <td>Awards</td>
+                                    <td>{this.props.getMovie.Awards}</td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </Col>
+                </Container>
+                )}
         </div>
-    )
+        )
+    }
 }
-
 export default MovieDetail;
