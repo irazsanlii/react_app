@@ -13,5 +13,5 @@ If user selects an item from listing page, the app is supposed to navigate the m
 You need npm installed in your local machine in order to run this app.
 
 # Installation
-npm install
+npm install,
 npm start
