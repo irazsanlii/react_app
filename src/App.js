@@ -1,19 +1,9 @@
+import React, { useReducer, useEffect, useState } from "react";
+import { Container, Row, Col, Navbar, NavbarToggler, Collapse, NavbarBrand, Nav, NavItem, Form } from "reactstrap";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Movie from "./Movie";
 import MovieDetail from "./MovieDetail";
 import Search from "./Search";
-//import Pagination from "./Pagination"
-import React, { useReducer, useEffect, useState } from "react";
-import {
-  Container,
-  Navbar,
-  NavbarToggler,
-  Collapse,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  Form
-} from "reactstrap";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 const initialState = {
   loading: true,
@@ -47,11 +37,6 @@ const reducer = (state, action) => {
 };
 
 const App = () => {
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggle = () => setIsOpen(!isOpen);
-
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => { // COMPONENT DID MOUNT
@@ -86,23 +71,54 @@ const App = () => {
             error: jsonResponse.Error
           });
         }
-      });
+      })
   };
 
-  // const [getMovie, setMovie] = useState();
+  // const url = URL.createObjectURL(jsonResponse)
+  // const MovieDetail = document.getElementById('details')
+  // MovieDetail.setAttribute('src', url);
+  // URL.revokeObjectURL(url);
+  // console.log(url);
+
+  // const [details, setDetails] = useState(null);
+  // useEffect(() => {
+  // By moving this function inside the effect, we can clearly see the values it uses.
+  // const getDetail = (choice) => {
+  //   fetch(`https://www.omdbapi.com/?i=${choice}&apikey=cc4daf76`)
+  //     .then(response => response.json())
+  //     .then(json => setDetails(json))
+  // };
+  //      getDetail();
+  //    }, [details);  // Valid because our effect only uses details.
+  // console.log(details);
+  //  ...
+  // } // End of the class.
+
+  var getMovie = [];
 
   const getDetail = (choice) => {
     fetch(`https://www.omdbapi.com/?i=${choice}&apikey=cc4daf76`)
       .then(response => response.json())
-      
       .then(jsonResponse => {
-        // setMovie(jsonResponse)
-        // console.log(getMovie)
-        console.log(jsonResponse)
+        if (jsonResponse.Response === "True") {
+
+          getMovie = jsonResponse
+          console.log(getMovie)
+
+        } else {
+          dispatch({
+            type: "failure",
+            error: jsonResponse.Error
+          });
+        }
       })
-  }
+  };
 
   const { movies, errorMessage, loading } = state;
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
 
   return (
     <Container fluid>
@@ -125,7 +141,7 @@ const App = () => {
             </Collapse>
           </Navbar>
         </div>
-        <div style={{ paddingTop: 100 }} >
+        <div class="d-flex justify-content-center" style={{ paddingTop: 100 }} >
           <Search search={search} />
         </div>
         <div style={{ paddingTop: 50 }} >
@@ -141,8 +157,7 @@ const App = () => {
                       <div className="errorMessage">{errorMessage}</div>
                     ) : (
                           movies.map((movie, index) => (
-                            <Movie {...props} key={`${index}-${movie.Title}`} getDetail={getDetail} movie={movie}
-                            />
+                            <Movie {...props} key={`${index}-${movie.Title}`} getDetail={getDetail} movie={movie} />
                           ))
                         )
                   )}
@@ -155,15 +170,13 @@ const App = () => {
                     ) : errorMessage ? (
                       <div className="errorMessage">{errorMessage}</div>
                     ) : (
-                          <MovieDetail {...props}  />
+                          <MovieDetail {...props} getMovie={getMovie} />
                         )
                   )}
+                // component={MovieDetail}
                 />
-                )}
-              />
-            </Switch>
+              </Switch>
             </Router>
-
           </Container>
         </div>
       </div>

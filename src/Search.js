@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button } from 'reactstrap';
 
-
 const Search = (props) => {
     const [item, setitem] = useState("");
 
@@ -20,7 +19,7 @@ const Search = (props) => {
     }
 
     return (
-        <Form inline>
+        <Form inline >
             <Input
                 value={item}
                 onChange={handleSearchInputChanges}
