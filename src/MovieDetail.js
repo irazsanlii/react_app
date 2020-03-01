@@ -1,7 +1,7 @@
 import React
     // , { useEffect }
     from 'react';
-import { Container, Col, Media, Table } from 'reactstrap';
+import { Container, Col, Table, Media, Card, Row } from 'reactstrap';
 
 const MovieDetail = (props) => {
 
@@ -10,12 +10,14 @@ const MovieDetail = (props) => {
     //     });
 
     return (
-        <div>
-            <Container>
-                <Col>
-                    <Media object data-src={props.getMovie.Poster} alt="Card image cap" />
+        <Container>
+            <Row>
+                <Col xs={6} md={4}>
+                    <Media
+                        src={props.getMovie.Poster}
+                        alt={props.getMovie.Title} />
                 </Col>
-                <Col>
+                <Col xs={6} md={8}>
                     <Table>
                         <tbody>
                             <tr key={props.getMovie.Title}>
@@ -68,13 +70,11 @@ const MovieDetail = (props) => {
                             </tr>
                         </tbody>
                     </Table>
-                </Col>
-            </Container>
-        </div>
+                </Col >
+            </Row>
+        </Container>
     )
-
 }
-
 
 export default MovieDetail;
 

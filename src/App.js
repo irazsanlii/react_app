@@ -1,9 +1,10 @@
 import React, { useReducer, useEffect, useState } from "react";
-import { Container, Row, Col, Navbar, NavbarToggler, Collapse, NavbarBrand, Nav, NavItem, Form } from "reactstrap";
+import { Container, Navbar, NavbarToggler, Collapse, NavbarBrand, Nav, NavItem, Form } from "reactstrap";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Search from "./Search";
 import Movie from "./Movie";
 import MovieDetail from "./MovieDetail";
-import Search from "./Search";
+// import Paginate from "./Paginate";
 
 const initialState = {
   loading: true,
@@ -41,7 +42,7 @@ const App = () => {
 
   useEffect(() => { // COMPONENT DID MOUNT
 
-    fetch("http://omdbapi.com/?apikey=cc4daf76&s=sun") // GET DATA
+    fetch("http://omdbapi.com/?apikey=cc4daf76&s=green") // GET DATA
       .then(response => response.json())
       .then(jsonResponse => {
 
@@ -73,12 +74,6 @@ const App = () => {
         }
       })
   };
-
-  // const url = URL.createObjectURL(jsonResponse)
-  // const MovieDetail = document.getElementById('details')
-  // MovieDetail.setAttribute('src', url);
-  // URL.revokeObjectURL(url);
-  // console.log(url);
 
   // const [details, setDetails] = useState(null);
   // useEffect(() => {
@@ -123,63 +118,61 @@ const App = () => {
   return (
     <Container fluid>
       <div>
-        <div>
-          <Navbar color="light" light expand="md">
-            <NavbarBrand href="/">movieSearch</NavbarBrand>
-            <NavbarToggler onClick={toggle} />
-            <Collapse isOpen={isOpen} navbar>
-              <Nav left className="ml-auto" navbar>
-                <NavItem></NavItem>
-              </Nav>
-              <Nav right navbar>
-                <NavItem>
-                  <Form inline>
-                    <Search search={search} />
-                  </Form>
-                </NavItem>
-              </Nav>
-            </Collapse>
-          </Navbar>
-        </div>
-        <div class="d-flex justify-content-center" style={{ paddingTop: 100 }} >
-          <Search search={search} />
-        </div>
-        <div style={{ paddingTop: 50 }} >
-          <Container >
-            <Router>
-              <Switch>
-                <Route
-                  exact path="/"
-                  render={props => (
-                    loading && !errorMessage ? (
-                      <span>loading... </span>
-                    ) : errorMessage ? (
-                      <div className="errorMessage">{errorMessage}</div>
-                    ) : (
-                          movies.map((movie, index) => (
-                            <Movie {...props} key={`${index}-${movie.Title}`} getDetail={getDetail} movie={movie} />
-                          ))
-                        )
-                  )}
-                />
-                <Route
-                  path="/details"
-                  render={props => (
-                    loading && !errorMessage ? (
-                      <span>loading... </span>
-                    ) : errorMessage ? (
-                      <div className="errorMessage">{errorMessage}</div>
-                    ) : (
-                          <MovieDetail {...props} getMovie={getMovie} />
-                        )
-                  )}
-                // component={MovieDetail}
-                />
-              </Switch>
-            </Router>
-          </Container>
-        </div>
+        <Navbar color="light" light expand="md">
+          <NavbarBrand href="/">movieSearch</NavbarBrand>
+          <NavbarToggler onClick={toggle} />
+          <Collapse isOpen={isOpen} navbar>
+            <Nav left className="ml-auto" navbar>
+              <NavItem></NavItem>
+            </Nav>
+            <Nav right navbar>
+              <NavItem>
+                <Form inline>
+                  <Search search={search} />
+                </Form>
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Navbar>
       </div>
+      <Container>
+        <div style={{ paddingTop: 50 }} >
+          <Router>
+            <Switch>
+              <Route
+                exact path="/"
+                render={props => (
+                  loading && !errorMessage ? (
+                    <span>loading... </span>
+                  ) : errorMessage ? (
+                    <div className="errorMessage">{errorMessage}</div>
+                  ) : (
+                        movies.map((movie, index) => (
+                          <Movie {...props} key={`${index}-${movie.Title}`} getDetail={getDetail} movie={movie} />
+                        ))
+                      )
+                )}
+              />
+              <Route
+                path="/details"
+                render={props => (
+                  loading && !errorMessage ? (
+                    <span>loading... </span>
+                  ) : errorMessage ? (
+                    <div className="errorMessage">{errorMessage}</div>
+                  ) : (
+                        <MovieDetail {...props} getMovie={getMovie} />
+                      )
+                )}
+              // component={MovieDetail}
+              />
+            </Switch>
+          </Router>
+        </div>
+      </Container>
+      {/* <div style={{ paddingTop: 50 }} >
+        <Paginate allMovies={movies} />
+      </div> */}
     </Container>
   );
 };
