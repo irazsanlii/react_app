@@ -42,11 +42,11 @@ const App = () => {
 
   useEffect(() => { // COMPONENT DID MOUNT
 
-    fetch("http://omdbapi.com/?apikey=cc4daf76&s=green") // GET DATA
+    fetch("http://omdbapi.com/?apikey=cc4daf76&s=green") // Get
       .then(response => response.json())
       .then(jsonResponse => {
 
-        dispatch({ // SEND
+        dispatch({ // Send
           type: "movieLoaded",
           payload: jsonResponse.Search
         });
@@ -74,20 +74,6 @@ const App = () => {
         }
       })
   };
-
-  // const [details, setDetails] = useState(null);
-  // useEffect(() => {
-  // By moving this function inside the effect, we can clearly see the values it uses.
-  // const getDetail = (choice) => {
-  //   fetch(`https://www.omdbapi.com/?i=${choice}&apikey=cc4daf76`)
-  //     .then(response => response.json())
-  //     .then(json => setDetails(json))
-  // };
-  //      getDetail();
-  //    }, [details);  // Valid because our effect only uses details.
-  // console.log(details);
-  //  ...
-  // } // End of the class.
 
   var getMovie = [];
 
@@ -170,8 +156,8 @@ const App = () => {
           </Router>
         </div>
       </Container>
-      {/* <div style={{ paddingTop: 50 }} >
-        <Paginate allMovies={movies} />
+      {/* <div className="d-flex justify-content-center" style={{ paddingTop: 50 }} >
+        <Paginate />
       </div> */}
     </Container>
   );

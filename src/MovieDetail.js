@@ -1,14 +1,7 @@
-import React
-    // , { useEffect }
-    from 'react';
+import React from 'react';
 import { Container, Col, Table, Media, Card, Row } from 'reactstrap';
 
 const MovieDetail = (props) => {
-
-    //     useEffect(() => {
-    //         props.getDetail();
-    //     });
-
     return (
         <Container>
             <Row>
