@@ -1,10 +1,9 @@
-import React, { useReducer, useEffect, useState } from "react";
-import { Container, Navbar, NavbarToggler, Collapse, NavbarBrand, Nav, NavItem, Form } from "reactstrap";
+import React, { useReducer, useEffect } from "react";
+import { Container, Navbar, NavbarBrand } from "reactstrap";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Search from "./Search";
 import Movie from "./Movie";
 import MovieDetail from "./MovieDetail";
-// import Paginate from "./Paginate";
 
 const initialState = {
   loading: true,
@@ -45,47 +44,53 @@ const App = () => {
     fetch("http://omdbapi.com/?apikey=cc4daf76&s=green") // Get
       .then(response => response.json())
       .then(jsonResponse => {
-
         dispatch({ // Send
           type: "movieLoaded",
           payload: jsonResponse.Search
         });
+        console.log(jsonResponse.totalResults);
       });
   }, []);
 
-  const search = (item) => {
+  const search = (item, index) => {
     dispatch({
       type: "movieRequest"
     });
 
-    fetch(`https://www.omdbapi.com/?s=${item}&apikey=cc4daf76`)
-      .then(response => response.json())
-      .then(jsonResponse => {
-        if (jsonResponse.Response === "True") {
-          dispatch({
-            type: "movieLoaded",
-            payload: jsonResponse.Search
-          });
-        } else {
-          dispatch({
-            type: "failure",
-            error: jsonResponse.Error
-          });
-        }
-      })
+    if (item) {
+      fetch(`https://www.omdbapi.com/?s=${item}&page=${index}&apikey=cc4daf76`)
+        .then(response => response.json())
+        .then(jsonResponse => {
+          if (jsonResponse.Response === "True") {
+            dispatch({
+              type: "movieLoaded",
+              payload: jsonResponse.Search
+            });
+            console.log(jsonResponse.totalResults);
+          } else {
+            dispatch({
+              type: "failure",
+              error: jsonResponse.Error
+            });
+          }
+        });
+    } else {
+      dispatch({
+        type: "failure",
+        error: "Please enter a value."
+      });
+    }
   };
 
-  var getMovie = [];
+  let getMovie = [];
 
   const getDetail = (choice) => {
     fetch(`https://www.omdbapi.com/?i=${choice}&apikey=cc4daf76`)
       .then(response => response.json())
       .then(jsonResponse => {
         if (jsonResponse.Response === "True") {
-
           getMovie = jsonResponse
           console.log(getMovie)
-
         } else {
           dispatch({
             type: "failure",
@@ -97,29 +102,13 @@ const App = () => {
 
   const { movies, errorMessage, loading } = state;
 
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggle = () => setIsOpen(!isOpen);
-
   return (
-    <Container fluid>
-      <div>
-        <Navbar color="light" light expand="md">
-          <NavbarBrand href="/">movieSearch</NavbarBrand>
-          <NavbarToggler onClick={toggle} />
-          <Collapse isOpen={isOpen} navbar>
-            <Nav left className="ml-auto" navbar>
-              <NavItem></NavItem>
-            </Nav>
-            <Nav right navbar>
-              <NavItem>
-                <Form inline>
-                  <Search search={search} />
-                </Form>
-              </NavItem>
-            </Nav>
-          </Collapse>
-        </Navbar>
+    <div>
+      <Navbar color="light" light expand="md">
+        <NavbarBrand href="/">movieSearch</NavbarBrand>
+      </Navbar>
+      <div className="d-flex justify-content-center" style={{ paddingTop: 50 }} >
+        <Search search={search} />
       </div>
       <Container>
         <div style={{ paddingTop: 50 }} >
@@ -150,16 +139,12 @@ const App = () => {
                         <MovieDetail {...props} getMovie={getMovie} />
                       )
                 )}
-              // component={MovieDetail}
               />
             </Switch>
           </Router>
         </div>
       </Container>
-      {/* <div className="d-flex justify-content-center" style={{ paddingTop: 50 }} >
-        <Paginate />
-      </div> */}
-    </Container>
+    </div>
   );
 };
 
